@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:peminjam/app/data/constant/endpoint.dart';
 import 'package:peminjam/app/data/model/response_pinjam.dart';
 import 'package:peminjam/app/data/provider/api_provider.dart';
+import 'package:peminjam/app/data/provider/storage_provider.dart';
 
 class PeminjamanController extends GetxController
     with StateMixin<List<DataPinjam>> {
@@ -31,7 +32,8 @@ class PeminjamanController extends GetxController
   Future<void> getData() async {
     change(null, status: RxStatus.loading());
     try {
-      final response = await ApiProvider.instance().get(Endpoint.pinjam);
+      final response = await ApiProvider.instance().get("${Endpoint
+          .pinjam}/${StorageProvider.read(StorageKey.idUser)}");
       if (response.statusCode == 200) {
         final ResponsePinjam responsePinjam =
             ResponsePinjam.fromJson(response.data);
